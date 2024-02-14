@@ -1,0 +1,7 @@
+{
+  "name": "ProgMedia",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

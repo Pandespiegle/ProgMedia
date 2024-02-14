@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Rejoindre une liste</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/lists" icon="arrow-back" ></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">list-add</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="listForm" (ngSubmit)="addProductList()">
+    <ion-item>
+      <ion-label position="floating">Nom de la liste</ion-label>
+      <ion-input aria-label="Code de la liste" type="text" required formControlName="code"></ion-input>
+    </ion-item>
+    <div *ngIf="listForm.invalid">
+      <ion-text color="danger">Le code doit comporter 15 caractères.</ion-text>
+    </div>
+    <ion-button type="submit" [disabled]="listForm.invalid">Rejoindre</ion-button>
+  </form>
+  <ion-button (click)="startScan()">Scanner le qr code </ion-button>
+</ion-content>
+ 

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nouveau produit</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/list" icon="arrow-back" ></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+ 
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="listForm" (ngSubmit)="addProduct()">
+    <ion-item>
+      <ion-label position="floating">Quantité</ion-label>
+      <ion-input aria-label="Quantité" type="text" required formControlName="quantity" [(ngModel)]="product.quantity"></ion-input>
+    </ion-item>
+    <div *ngIf="listForm.get('quantity')!.hasError('required')">
+      <ion-text color="danger">La quantité est requise.</ion-text>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Nom</ion-label>
+      <ion-input aria-label="Nom de la liste" type="text" required formControlName="name" [(ngModel)]="product.name"></ion-input>
+    </ion-item>
+    <div *ngIf="listForm.get('name')!.hasError('required')">
+      <ion-text color="danger">Le nom est requis.</ion-text>
+    </div>
+    <ion-button type="submit" [disabled]="listForm.invalid">Créer</ion-button>
+  </form>
+</ion-content>
