@@ -44,16 +44,16 @@ export class ListAddPage implements OnInit {
   async startScan() {
 
     await BarcodeScanner.checkPermission({ force: true });
-    document.querySelector('ion-content')!.classList.add('scanner-active');
+    document.querySelector('body')!.classList.add('scanner-active');
   
     BarcodeScanner.hideBackground();
   
     const result = await BarcodeScanner.startScan(); 
   
     if (result.hasContent) {
-      this.listForm.value.code = result.content;
+      this.listForm.setValue({code: result.content});
       BarcodeScanner.stopScan();
-      document.querySelector('ion-content')!.classList.remove('scanner-active');
+      document.querySelector('body')!.classList.remove('scanner-active');
     }
 
   };
@@ -61,5 +61,7 @@ export class ListAddPage implements OnInit {
   ionViewWillLeave() {
     BarcodeScanner.stopScan();
   }
+
+  
 
 }
