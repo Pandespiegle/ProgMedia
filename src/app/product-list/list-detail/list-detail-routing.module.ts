@@ -7,7 +7,7 @@ const routes: Routes = [
     component: ListDetailPage
   },
   {
-    path: 'new-product/:code',
+    path: 'new-product/:listId',
     loadChildren: () => import('../product-new/product-new.module').then( m => m.ProductNewPageModule)
   },
  

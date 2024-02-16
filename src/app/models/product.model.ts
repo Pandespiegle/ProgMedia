@@ -3,13 +3,13 @@ export class Product{
     name: string;
     quantity: string;
     checked: boolean;
-    code: string;
+    list_id: string;
 
     constructor(){
         this.name = '';
         this.quantity = '';
         this.checked = false;
-        this.code = '';
+        this.list_id = '';
     }
 
 }

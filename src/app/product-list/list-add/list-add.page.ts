@@ -19,15 +19,12 @@ export class ListAddPage implements OnInit {
     private storage: Storage,
     private productListService: ProductListService,    
     private formBuilder: FormBuilder,
-    private navCtrl: NavController
+    private navCtrl: NavController,
 
     ) {
       this.listForm = this.formBuilder.group({
-        code: ['', [Validators.required, Validators.minLength(15), Validators.maxLength(15)] ],
-        
+        code: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(20)] ],
         });
-
-      
     }
 
   async ngOnInit() {
@@ -37,7 +34,7 @@ export class ListAddPage implements OnInit {
 
   async addProductList() {
     const code = this.listForm.value.code;
-    this.productListService.addStorageCode(code).subscribe(() => {
+    this.productListService.addStorageListId(code).subscribe(() => {
       this.listForm.value.code = '';
       this.navCtrl.pop();
     }
@@ -47,7 +44,7 @@ export class ListAddPage implements OnInit {
   async startScan() {
 
     await BarcodeScanner.checkPermission({ force: true });
-    document.querySelector('body')!.classList.add('scanner-active');
+    document.querySelector('ion-content')!.classList.add('scanner-active');
   
     BarcodeScanner.hideBackground();
   
@@ -56,9 +53,13 @@ export class ListAddPage implements OnInit {
     if (result.hasContent) {
       this.listForm.value.code = result.content;
       BarcodeScanner.stopScan();
-      document.querySelector('body')!.classList.remove('scanner-active');
+      document.querySelector('ion-content')!.classList.remove('scanner-active');
     }
 
   };
+
+  ionViewWillLeave() {
+    BarcodeScanner.stopScan();
+  }
 
 }

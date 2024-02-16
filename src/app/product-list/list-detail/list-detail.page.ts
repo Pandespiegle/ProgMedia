@@ -14,8 +14,9 @@ import { NavController } from '@ionic/angular';
 export class ListDetailPage implements OnInit {
   @ViewChild(IonModal) modal: IonModal | undefined;
   products!: Array<Product>;
-  listCode: string = '';
+  listId: string = '';
   list: any;
+  modif = false;
 
   constructor(private productService: ProductService,     
     private alertCtrl : AlertController,
@@ -25,21 +26,20 @@ export class ListDetailPage implements OnInit {
 
     ) {
       this.route.params.subscribe(params => {
-         this.listCode = params['code '];
+         this.listId = params['listId '];
       });
     }
 
-  ngOnInit() {
+    ngOnInit() {
 
-    this.listeService.getOneByCode(this.listCode).subscribe((data: any) => {
-      this.list = data[0];
-    }
-    );
-
-
-    this.productService.getAllByCode(this.listCode).subscribe((data: any) => {
-      this.products = data;
-      
+      this.listeService.getById(this.listId).subscribe((data: any) => {
+        this.list = data;
+      }
+      );
+    
+      this.productService.getByListId(this.listId).subscribe((data: any) => {
+        this.products = data;
+        
     });
   }
   
@@ -57,7 +57,7 @@ export class ListDetailPage implements OnInit {
           role: 'Cancel'
         }, {
           text: 'Supprimer',
-          handler: () => {this.productService.deleteProduct(id)}
+          handler: () => {this.productService.deleteProduct(id), this.navCtrl.pop();}
         }
       ]
     });
@@ -80,9 +80,12 @@ export class ListDetailPage implements OnInit {
           role: 'Cancel'
         }, {
           text: 'Supprimer',
-          handler: () => {        
-            this.listeService.deleteProductList(this.list.id).subscribe(() => {
-              this.listeService.deleteStorageCode(this.list.code);
+          handler: () => {       
+
+            
+            this.listeService.deleteProductList(this.listId).subscribe(() => {
+              
+              this.listeService.deleteStorageListId(this.listId);
               this.navCtrl.pop();
             }
             );
@@ -93,6 +96,32 @@ export class ListDetailPage implements OnInit {
     await alert.present();
     
   }
+
+  async onModif() {
+    const alert = await this.alertCtrl.create({
+      header : 'Etes vous sur de vouloir rendre la modification possible ?',
+      subHeader: 'Vous rendrez possible la modification',
+      buttons : [
+        {
+          text: 'Annuler',
+          role: 'Cancel'
+        }, {
+          text: 'Modifier',
+          handler: () => {       
+            this.modif = true;    
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  onSave() {
+    this.listeService.updateProductList(this.listId, this.list).subscribe(() => {
+      this.modif = false;
+    }
+  
+  );
   
 }
-
+}

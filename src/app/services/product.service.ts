@@ -44,15 +44,22 @@ export class ProductService {
     this.db.doc(`products/${product.id}`).update({checked: product.checked})
   }
 
-  getAllByCode(code: string): any{
+  updateProduct(product: Product) {
+    this.db.doc(`products/${product.id}`).update({name: product.name, quantity: product.quantity})
+  }
+
+
+  getByListId(listId: string): any{
     return this.productsRef.snapshotChanges().pipe(
       map((changes: any) => {
         return changes.map((doc:any) => {
           return ({id: doc.payload.doc.id, ...doc.payload.doc.data()})
-        }).filter((product: Product) => product.code === code )
+        }).filter((product: Product) => product.list_id === listId )
       })
     );
   }
+
+
 
 
 }

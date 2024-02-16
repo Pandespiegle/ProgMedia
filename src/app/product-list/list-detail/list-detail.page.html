@@ -1,9 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> </ion-title>
+    <ion-title *ngIf="list && !modif" >{{ list.name }}</ion-title>
+    <ion-input *ngIf="modif" [(ngModel)]="list.name" ></ion-input>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/lists" icon="arrow-back" ></ion-back-button>
+      
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="!modif" (click)="onModif()">Modifier</ion-button>
+      <ion-button *ngIf="modif" (click)="onSave()">Enregistrer</ion-button>
+    </ion-buttons>
+    
   </ion-toolbar>
 </ion-header>
 
@@ -13,51 +20,64 @@
       <ion-title size="large">Liste des produits </ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-card>
-    <ion-button id="open-modal" expand="block">Open</ion-button>
 
-    
-    <ion-modal cssClass="custom-modal" trigger="open-modal" >       
-      <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-title>QR Code</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="cancel()">Cancel</ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content>
-          <ion-card>
-            <ion-card-content class="ion-text-center">
-              <qrcode [qrdata] = "listCode" [width] = 200></qrcode>
-            </ion-card-content>
-          </ion-card>
-        </ion-content>
-      </ng-template>
-    </ion-modal>
+  <ion-modal cssClass="custom-modal" trigger="open-modal" >       
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{listId}}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cancel()">Fermer</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-card>
+          <ion-card-content class="ion-text-center">
+            <qrcode [qrdata] = "listId" [width] = 200></qrcode>
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
-    
-    <ion-list>
-      <ion-row  class="ion-text-center ion-align-items-center">
-        <ion-col  size="3">Quantité</ion-col>
-        <ion-col  size="5">Nom</ion-col>
-        <ion-col size="2">Acheté</ion-col>
-        <ion-col size="2"></ion-col>
-      </ion-row>
-      <ion-row  class="ion-text-center ion-align-items-center" *ngFor="let product of products">
-        <ion-col  size="3">{{product.quantity}}</ion-col>
-        <ion-col  size="5">{{product.name}}</ion-col>
-        <ion-col size="2">
-          <ion-checkbox (ionChange)="onCheck(product)"  [(ngModel)]="product.checked"></ion-checkbox>
-        </ion-col>
-        <ion-col size="2">
-          <ion-icon size="large"(click)="onDelete(product.id)" name="close-circle-outline"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </ion-list>
-  </ion-card>
-  <ion-button (click)="onDeleteList()">Supprimer la liste</ion-button>
-  <ion-button [routerLink]="['new-product', listCode]">Nouveau produit</ion-button>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card >
+          <ion-button id="open-modal" expand="block">Code</ion-button>
+          <ion-list>
+            <ion-row  class="ion-text-center ion-align-items-center">
+              <ion-col  size="3">Quantité</ion-col>
+              <ion-col  size="5">Nom</ion-col>
+              <ion-col size="2">Acheté</ion-col>
+              <ion-col size="2"></ion-col>
+            </ion-row>
+            <ion-row  class="ion-text-center ion-align-items-center" *ngFor="let product of products">
+              <ion-col  size="3">{{product.quantity}}</ion-col>
+              <ion-col  size="5">{{product.name}}</ion-col>
+              <ion-col size="2">
+                <ion-checkbox (ionChange)="onCheck(product)"  [(ngModel)]="product.checked"></ion-checkbox>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon size="large"(click)="onDelete(product.id)" name="close-circle-outline"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-between">
+      <ion-col size="4">
+        <ion-button (click)="onDeleteList()">Supprimer la liste</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button [routerLink]="['new-product', listId]">Ajouter</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  
 
 </ion-content>

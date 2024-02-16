@@ -15,7 +15,7 @@ import { NavController } from '@ionic/angular';
 export class ProductNewPage implements OnInit {
 
   public product!: Product;
-  public code: any;
+  public listId: any;
   listForm : FormGroup;
 
   constructor(
@@ -25,9 +25,7 @@ export class ProductNewPage implements OnInit {
     private formBuilder: FormBuilder,
     private navCtrl: NavController
 
-  ) { this.route.params.subscribe(params => {
-       this.code = params['code'];
-     }); 
+  ) { 
      this.listForm = this.formBuilder.group({
       name: ['', Validators.required],
       quantity: ['', Validators.required],
@@ -35,7 +33,7 @@ export class ProductNewPage implements OnInit {
       });}
 
   ngOnInit() {
-    
+    this.listId = this.route.snapshot.paramMap.get('listId');
     this.product = new Product();
   }
 
@@ -52,7 +50,7 @@ export class ProductNewPage implements OnInit {
   }
 
   addProduct(){
-    this.product.code = this.code;
+    this.product.list_id = this.listId;
     this.productService.addProduct(this.product).subscribe(() => {
       this.product = new Product();
       this.presentToast();

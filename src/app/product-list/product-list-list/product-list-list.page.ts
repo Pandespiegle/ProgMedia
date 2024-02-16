@@ -10,19 +10,18 @@ import { AlertController } from '@ionic/angular';
 export class ProductListListPage implements OnInit {
 
   lists: any;
-  codes: any;
 
   constructor(private productListService : ProductListService, private alertCtrl : AlertController,
     ) { }
 
   ngOnInit() {
    
-    this.productListService.getAllByCodes().subscribe((data: any) => {
+    this.productListService.getByAllListIds().subscribe((data: any) => {
       this.lists = data;
     });
   }
 
-  async leaveList(code: string){
+  async leaveList(listId: string){
 
     const alert = await this.alertCtrl.create({
       header : 'Etes vous sur de vouloir supprimer ?',
@@ -34,8 +33,8 @@ export class ProductListListPage implements OnInit {
         }, {
           text: 'Supprimer',
           handler: () => { 
-            this.productListService.deleteStorageCode(code).subscribe(() => {
-            this.productListService.getAllByCodes().subscribe((data: any) => {
+            this.productListService.deleteStorageListId(listId).subscribe(() => {
+            this.productListService.getByAllListIds().subscribe((data: any) => {
               this.lists = data;
             });
           } );}
@@ -44,10 +43,10 @@ export class ProductListListPage implements OnInit {
     });
     await alert.present();
 
-   
+  }
 
-
-
+  reload(){
+    window.location.reload();
   }
 
   

@@ -11,15 +11,38 @@
   <ion-header collapse="condense">
    
   </ion-header>
-  <form [formGroup]="listForm" (ngSubmit)="addProductList()">
-    <ion-item>
-      <ion-label position="floating">Nom de la liste</ion-label>
-      <ion-input aria-label="Nom de la liste" type="text" required formControlName="name"></ion-input>
-    </ion-item>
-    <div *ngIf="listForm.invalid">
-      <ion-text color="danger">Le nom de la liste est requis.</ion-text>
-    </div>
-    <ion-button type="submit" [disabled]="listForm.invalid">Créer</ion-button>
-  </form>
+
+  <ion-grid>
+    <form [formGroup]="listForm" (ngSubmit)="addProductList()">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title size="large">Créer une nouvelle liste</ion-title>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Nom de la liste</ion-label>
+            <ion-input aria-label="Nom de la liste" type="text" required formControlName="name"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <div *ngIf="listForm.invalid">
+            <ion-text color="danger">Le nom de la liste est requis.</ion-text>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+        <ion-button type="submit" [disabled]="listForm.invalid">Créer</ion-button>
+      </ion-col>
+    </ion-row>
+    </form>
+  </ion-grid>
+
+
+ 
   
 </ion-content>

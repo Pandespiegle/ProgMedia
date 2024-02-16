@@ -5,6 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-new',
@@ -20,11 +21,12 @@ export class ListNewPage implements OnInit {
     private toastController: ToastController,
     private storage: Storage,
     private formBuilder: FormBuilder,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private router: Router
 
   ) {
-    this.listForm = this.formBuilder.group({
-    name: ['', Validators.required]
+      this.listForm = this.formBuilder.group({
+      name: ['', Validators.required]
     });
   }
 
@@ -34,47 +36,25 @@ export class ListNewPage implements OnInit {
   
   async presentToast() {
     const toast = await this.toastController.create({
-      message: 'Nouveau Produit enregistré',
-      duration: 1000
+      message: 'Nouvelle liste créée',
     });
 
     toast.present().then(() => {
       setTimeout(() => {
-        this.navCtrl.pop();
+        this.router.navigate(['/lists']);  
       }, 500);
+      
+
     });
   }
 
   addProductList() {
-    const code = this.generateRandomString();
     this.productListService.addProductList({
       name: this.listForm.value.name,
-      code: code
     }).subscribe(() => {
       this.productList = new ProductList();
       this.presentToast();
-      
-      this.storage.get('codeList').then((list) => {
-        if (!list) {
-          list = [];
-        }
-  
-        list.push(code);
-        this.storage.set('codeList', list);
-      });
     });
   }
   
-
-  generateRandomString(): string {
-    const length = 15;
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-
-    return result;
-  }
 }
